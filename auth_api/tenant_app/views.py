@@ -21,6 +21,7 @@ class TenantLoginView(APIView):
         ser = TenantLoginSerializer(data=request.data)
         ser.is_valid(raise_exception=True)
         tenant, password = ser.validated_data.get("tenant"), ser.validated_data.get("password")
+
         _user = auth.authenticate(request=request, user=None, tenant=tenant, password=password)
         auth.login(request=request, user=_user)
         token = token_util.generate_token(instance=_user)

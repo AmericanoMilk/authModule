@@ -1,11 +1,12 @@
+import rest_framework.request
+from rest_framework import serializers
 from rest_framework.exceptions import NotFound
 
-from common.constant import TENANT_SPLIT
-from common.enum.tenant import NORMAL
+from common.enum.tenant import TenantStatusChoice
+from common_modules.constant import TENANT_SPLIT, REDIS_TENANT_KEY
 from common.permission.uri_auth_helper import url_auth_helper
-from common.account.utils import split_tenant_user, AccountUtils
-from constant import REDIS_TENANT_KEY
-from exception.api import NotFoundPage
+from common.account.utils import AccountUtils
+from common_modules.exception.api import NotFoundPage
 from user_app import models as user_model
 from tenant_app import models as tenant_model
 
@@ -22,11 +23,14 @@ class RBACRbacBackends:
     # def get_all_permission(self, obj):
     #     # 获取当前模型的所有权限
     #     """"""
+    def has_permission(self, request: rest_framework.request.Request, view, **kwargs):
+        data = request.data
+        return True
 
     def authenticate(self, request, user=None, password=None, tenant=None, **kwargs):
         if user:
             if TENANT_SPLIT in user:
-                tenant, user = split_tenant_user(user)
+                tenant, user = AccountUtils.split_tenant_user(user)
         elif tenant and user:
             pass
         else:
@@ -40,7 +44,8 @@ class RBACRbacBackends:
             if all([tenant, user]):
                 # 用户
                 # tenant_obj = tenant_model.Tenant.objects.get(tenant=tenant, status=NORMAL)
-                auth_obj = user_model.User.objects.get(user=user, status=NORMAL, fk_tenant_id__tenant=tenant_account)
+                auth_obj = user_model.AuthUser.objects.get(user=user, status=TenantStatusChoice.NORMAL,
+                                                           fk_tenant_id__tenant=tenant_account)
                 user_account = auth_obj.user
                 # sync_user_helper.user_info(tenant=tenant, user_obj=auth_obj)
             elif tenant:

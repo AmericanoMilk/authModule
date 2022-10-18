@@ -2,15 +2,17 @@ import json
 import re
 
 from django.http import HttpResponseNotFound
+from common_modules.redis_module.redis_client import RedisClient
+from common_modules.constant import REDIS_TENANT_KEY
 
-redis_client = business_middleware_client.get_tenant_redis()
+redis_client = RedisClient()
 
 
 class URLAuthHelper:
     compile = dict()
 
     def __init__(self):
-        self.redis_client = conn_client.get_redis_client(db=REDIS_TENANT_DB)
+        self.redis_client = redis_client
 
     def has_url_permission(self, tenant, method, url, *args, **kwargs):
         # 先获取角色

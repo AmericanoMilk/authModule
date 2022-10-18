@@ -2,9 +2,9 @@ from rest_framework import serializers
 from tenant_app.models import Tenant
 
 
-class TenantLoginSerializer(serializers.Serializer):
+class TenantLoginSerializer(serializers.ModelSerializer):
     class Meta:
-        models = Tenant
+        model = Tenant
         fields = ("tenant", "password")
 
 
@@ -27,6 +27,12 @@ class TenantRegisterSerializer(serializers.ModelSerializer):
 
 
 class TenantSearchSerializer(serializers.Serializer):
+    def update(self, instance, validated_data):
+        pass
+
+    def create(self, validated_data):
+        pass
+
     class Meta:
         models = Tenant
         fields = ("tenant", "create_time", "update_time")

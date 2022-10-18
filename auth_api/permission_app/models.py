@@ -13,6 +13,6 @@ class APIPermission(AbstractBaseModel):
 
     name = models.CharField(max_length=100, db_index=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
-    type = models.CharField(choices=PERMISSION_TYPE, max_length=128)
+    # type = models.CharField(choices=PERMISSION_TYPE, max_length=128)
 
 
