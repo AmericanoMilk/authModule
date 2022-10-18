@@ -1,3 +1,4 @@
+from common.enum.tenant import AccountType
 from common_modules.constant import TENANT_SPLIT
 
 # Model
@@ -45,7 +46,7 @@ class AccountUtils:
         return user.split(TENANT_SPLIT)
 
     def join_tenant_user(self, tenant, user):
-        return TENANT_SPLIT.join(tenant, user)
+        return f"{tenant}{TENANT_SPLIT}{user}"
 
     def get_account_key(self, instance):
         """
@@ -59,6 +60,9 @@ class AccountUtils:
             return self.join_tenant_user(tenant=instance.fk_tenant_id.tenant, user=instance.user)
         else:
             return instance.user
+
+    def get_account_type(self, instance):
+        return AccountType.USER
 
 
 account_utils = AccountUtils()

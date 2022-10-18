@@ -132,12 +132,12 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
+    "EXCEPTION_HANDLER": "common.exception.drf_exception.response_exception_handler",
 
 }
 AUTH_USER_MODEL = "user_app.AuthUser"
-AUTHENTICATION_BACKENDS = ["backends.backends.RBACRbacBackends"]
+AUTHENTICATION_BACKENDS = ["common.backends.backends.RBACRbacBackends"]
 # DEFAULT_AUTHENTICATION_CLASSES = ""
-# REST_FRAMEWORK= {}
 
 
 # Custom Settings

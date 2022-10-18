@@ -3,7 +3,7 @@ from django.db import models
 from shortuuid import uuid
 from shortuuid.django_fields import ShortUUIDField
 
-from common.enum.tenant import TenantStatusChoice
+from common.enum.tenant import AccountStatusChoice
 from django.utils.translation import gettext_lazy as _
 
 from common_modules.api.model import AbstractBaseModel
@@ -20,7 +20,7 @@ class Tenant(AbstractBaseModel):
     name = models.CharField(null=True, help_text="租户名称", max_length=32, blank=True)
     password = models.CharField(null=False, help_text="密码", max_length=32, blank=False)
 
-    status = models.CharField(choices=TenantStatusChoice.choices, default=TenantStatusChoice.NORMAL, max_length=24)
+    status = models.CharField(choices=AccountStatusChoice.choices, default=AccountStatusChoice.NORMAL, max_length=24)
     is_superuser = models.BooleanField(default=False, help_text="是否超级管理员")
     last_login = models.DateTimeField(auto_now=True, help_text="最后登录", editable=True, db_column="last_login")
 
@@ -33,7 +33,7 @@ class Tenant(AbstractBaseModel):
 
     @property
     def is_normal(self):
-        return self.status == TenantStatusChoice.NORMAL
+        return self.status == AccountStatusChoice.NORMAL
 
     @property
     def is_admin(self):

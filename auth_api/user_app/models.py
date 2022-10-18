@@ -2,10 +2,10 @@ from django.contrib.auth.models import PermissionsMixin, AbstractUser
 from shortuuid import uuid
 from shortuuid.django_fields import ShortUUIDField
 
-from common.enum.tenant import TenantStatusChoice
+from common.enum.tenant import AccountStatusChoice
 from common_modules.api.deprecation import CallableFalse, CallableTrue
 from common_modules.api.model import AbstractBaseModel
-from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import gettext_lazy as _
 from django.db import models
 
@@ -81,7 +81,7 @@ class AuthUser(AbsCustomUser, AbstractUser, PermissionsMixin):
     password = models.CharField(null=False, blank=False, help_text="密码", max_length=128)
     token_version = ShortUUIDField(null=True, max_length=64, help_text="版本", unique=True, default=uuid())
 
-    status = models.CharField(choices=TenantStatusChoice.choices, default=TenantStatusChoice.NORMAL, max_length=24)
+    status = models.CharField(choices=AccountStatusChoice.choices, default=AccountStatusChoice.NORMAL, max_length=24)
     fk_tenant_id = models.OneToOneField(Tenant, on_delete=models.CASCADE, help_text="租户")
 
     is_active = models.BooleanField(
@@ -115,7 +115,7 @@ class AuthUser(AbsCustomUser, AbstractUser, PermissionsMixin):
 
     def get_all_permissions(self, obj=None):
         if not self.__rbac_backend:
-            from backends.backends import RBACRbacBackends
+            from common.backends.backends import RBACRbacBackends
 
             self.__rbac_backend = RBACRbacBackends()
         return self.__rbac_backend.get_all_permission(self)

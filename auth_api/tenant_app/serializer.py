@@ -2,10 +2,9 @@ from rest_framework import serializers
 from tenant_app.models import Tenant
 
 
-class TenantLoginSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Tenant
-        fields = ("tenant", "password")
+class TenantLoginSerializer(serializers.Serializer):
+    tenant = serializers.CharField(required=True, allow_blank=False, allow_null=False)
+    password = serializers.CharField(required=True, allow_blank=False, allow_null=False)
 
 
 class TenantRegisterSerializer(serializers.ModelSerializer):

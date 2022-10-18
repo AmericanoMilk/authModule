@@ -1,6 +1,9 @@
 from django.contrib import auth
 from django.contrib.auth.password_validation import validate_password
+from rest_framework import permissions
 from rest_framework.views import APIView
+from rest_framework_simplejwt import authentication
+
 from common.generic.response import Response
 from common.obj.transaction import Transaction
 from common.queryset_util import queryset_util
@@ -55,6 +58,9 @@ class TenantRegister(APIView):
 
 
 class TenantInfoView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = (authentication.JWTAuthentication,)
+
     @parsed_calibration_params
     def get(self, request, *args, **kwargs):
         ser = TenantSearchSerializer(data=request.data)
