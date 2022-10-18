@@ -29,19 +29,18 @@ class RBACRbacBackends:
         return True
 
     def authenticate(self, request, user=None, password=None, tenant=None, **kwargs):
-
+        auth_obj = None
         if user and not tenant:
             return None
         elif tenant and not user:
-            pass
+            auth_obj = tenant_model.Tenant.objects.get(tenant=tenant)
         elif tenant and user:
-            # auth_obj = user_model.AuthUser.objects.get(user=user, status=TenantStatusChoice.NORMAL,
-            #                                            fk_tenant_id__tenant=tenant)
-            auth_obj = user_model.AuthUser.objects.first()
+            auth_obj = user_model.AuthUser.objects.get(user=user, status=AccountStatusChoice.NORMAL,
+                                                       fk_tenant_id__tenant=tenant)
             user_account = auth_obj.user
             return auth_obj
-        else:
-            return None
+
+        return auth_obj
 
         # q = AccountUtils().split_tenant_user(user)
         # print(q)

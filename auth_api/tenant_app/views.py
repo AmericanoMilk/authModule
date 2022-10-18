@@ -28,15 +28,15 @@ class TenantLoginView(APIView):
         _user = auth.authenticate(request=request, user=None, tenant=tenant, password=password)
         auth.login(request=request, user=_user)
         token = token_util.generate_token(instance=_user)
-        token_util.upload_token(tenant=tenant, tenant_id=_user.uuid)
+        token_util.upload_token(instance=_user, token=token)
 
         response.data = {
-            "token": token,
-            "tenantId": _user.UUID,
+            "access_token": token,
+            "tenantId": _user.uuid,
             "name": _user.name,
             "isAdmin": _user.is_admin,
-            "isActive": _user.is_active,
-            "lastLogin": _user.last_login,
+            "isActive": _user.is_normal,
+            "lastLogin": int(_user.last_login.timestamp())
         }
         return response
 

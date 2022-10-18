@@ -4,18 +4,18 @@
 
 ### 新增租户
 
-| 请求方法 | POST                |      |
-| -------- | ------------------- | ---- |
-| 请求URL  | /v1/tenant/register |      |
-| 参数类型 | Body                |      |
+| 请求方法 | POST                |
+| -------- | ------------------- |
+| 请求URL  | /v1/tenant/register |
+| 参数类型 | Body                |
 
 ##### Request
 
-| 参数     | 类型          | 是否必须 | 备注           |
-| -------- | ------------- | -------- | -------------- |
-| tenant   | string        | 是       | 租户账号       |
-| password | Any From Json | 是       | 已做弱密码拦截 |
-| name     | Any From Json | 否       | 租户名称       |
+| 参数     | 类型          | 是否必须 | 备注             |
+| -------- | ------------- | -------- | ---------------- |
+| tenant   | string        | 是       | 租户账号[unique] |
+| password | Any From Json | 是       | 弱密码拦截       |
+| name     | Any From Json | 否       | 租户名称         |
 
 ```json
 {
@@ -41,10 +41,10 @@
 
 ### 租户登陆
 
-| 请求方法 | POST             |      |
-| -------- | ---------------- | ---- |
-| 请求URL  | /v1/tenant/login |      |
-| 参数类型 | Body             |      |
+| 请求方法 | POST             |
+| -------- | ---------------- |
+| 请求URL  | /v1/tenant/login |
+| 参数类型 | Body             |
 
 
 
@@ -64,16 +64,42 @@
 
 ##### Response / Json
 
+| 参数         | 类型    | 是否必须 | 备注         |
+| ------------ | ------- | -------- | ------------ |
+| access_token | Strings | 是       | Token        |
+| tenantId     | Strings | 是       | 租户ID       |
+| name         | Strings | 是       | 租户名称     |
+| isAdmin      | Boolen  | 是       | 是否管理员   |
+| isActive     | Boolen  | 是       | 是否活跃账户 |
+| lastLogin    | Inter   | 是       | 最后登陆时间 |
+
+
+
+```json
+{
+    "code": 200,
+    "msg": "",
+    "data": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InhGM2VFYUdVb2UyaFBtNERzbmp4WGIiLCJ2ZXJzaW9uIjoia0RHTUVvNERmVll3cW1jVDMyZEFwbSIsInRpbWUiOiIyMDIyLTEwLTE4VDA5OjI5OjA4LjA0MDc4NloiLCJleHAiOjE2NjYyNTgxNDh9.FqxonC1COMdERCvO0dInn9947jan6-yOFYXvdaoN-I8",
+        "tenantId": "xF3eEaGUoe2hPm4DsnjxXb",
+        "name": null,
+        "isAdmin": false,
+        "isActive": true,
+        "lastLogin": 1666085463
+    }
+}
+```
+
 
 
 
 
 ### 获取Token
 
-| 请求方法 | POST       |      |
-| -------- | ---------- | ---- |
-| 请求URL  | /api/token |      |
-| 参数类型 | Body       |      |
+| 请求方法 | POST       |
+| -------- | ---------- |
+| 请求URL  | /api/token |
+| 参数类型 | Body       |
 
 
 
@@ -106,6 +132,8 @@
 | currentTime   | Inter         | 是       | Token生成时间时间戳 |
 | expireTime    | Inter         | 是       | Token过期时间       |
 | tokenType     | String        | 是       | 默认 refresh        |
+
+
 
 
 

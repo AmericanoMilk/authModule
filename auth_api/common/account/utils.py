@@ -59,7 +59,7 @@ class AccountUtils:
         if hasattr(instance, "fk_tenant_id"):
             return self.join_tenant_user(tenant=instance.fk_tenant_id.tenant, user=instance.user)
         else:
-            return instance.user
+            return instance.tenant
 
     def get_account_type(self, instance):
         return AccountType.USER
