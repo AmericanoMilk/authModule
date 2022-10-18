@@ -1,4 +1,4 @@
-from redis_module.utility.redis_util import AbsRedis
+from common_modules.redis_module.utility.redis_util import AbsRedis
 
 
 class RedisClient(AbsRedis):

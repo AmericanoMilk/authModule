@@ -1,12 +1,9 @@
-from redis.client import Redis
-
-from common_modules.loggers import logger
 import ctypes
 import inspect
-import json
 
+from redis.client import Redis
 
-from common_modules.loggers import logger
+from common_modules.logger import logger
 
 
 class RedisCommonTools:
@@ -15,7 +12,7 @@ class RedisCommonTools:
     def get_all_members(self, key):
         # 无视对象类型 todo待实现
         key_type = self.client.type(key)
-        pass
+        raise NotImplementedError("this method not defined")
 
     def set_expire(self, key, seconds):
         try:

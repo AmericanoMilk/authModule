@@ -93,7 +93,7 @@ class User(AbstractUser):
         AUTH_USER_MODEL must be created in the first migration of its app (usually called 0001_initial); otherwise, 
         you’ll have dependency issues. """
         swappable = "AUTH_USER_MODEL"
-        app_label = "user"
+        # app_label = "user"
 
     def get_all_roles(self):
         pass

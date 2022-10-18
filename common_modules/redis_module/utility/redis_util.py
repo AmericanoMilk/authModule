@@ -1,13 +1,13 @@
 import redis
 
 from common_modules.config import config
-from redis_module.utility.redis_channel import RedisChannel
-from redis_module.utility.redis_dict import RedisDict
-from redis_module.utility.redis_list import RedisList
-from redis_module.utility.redis_str import RedisStr
-from redis_module.utility.redis_tools import RedisCommonTools
+from common_modules.redis_module.utility.redis_channel import RedisChannel
+from common_modules.redis_module.utility.redis_dict import RedisDict
+from common_modules.redis_module.utility.redis_list import RedisList
+from common_modules.redis_module.utility.redis_str import RedisStr
+from common_modules.redis_module.utility.redis_tools import RedisCommonTools
 
-redis_conf = config["redis"]
+redis_conf = config.redis
 
 
 class AbstractRedis(RedisList, RedisDict, RedisChannel, RedisStr, RedisCommonTools):
@@ -37,7 +37,7 @@ class AbsRedis(AbstractRedis):
             # setattr(ghost_dict, str(db), self.connect_pool)
 
     def __init__(
-            self, db=0, *args, host=redis_conf["host"], port=redis_conf["port"], password=redis_conf["password"], **kw
+            self, db=0, *args, host=redis_conf.host, port=redis_conf.port, password=redis_conf.password, **kw
     ):
         self.__connect(host=host, port=port, password=password, db=db, kw=kw)
 

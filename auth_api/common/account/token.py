@@ -1,12 +1,8 @@
 from django.conf import settings
-from django.db import models
 
-from tenant_app import models as tenant_model
-from user_app import models as user_model
-from common.constant import TOKEN_EXPIRES_TIME
-from constant import REDIS_TOKEN_KEY
 from common_modules.redis_module.redis_client import RedisClient
-from utc_tools import get_utc
+from common_modules.constant import TOKEN_EXPIRES_TIME
+from common_modules.utc_tools import get_utc
 
 redis_client = RedisClient()
 
