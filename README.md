@@ -4,7 +4,10 @@
 
 ### 新增租户
 
-> POST /v1/tenant/register
+| 请求方法 | POST                |      |
+| -------- | ------------------- | ---- |
+| 请求URL  | /v1/tenant/register |      |
+| 参数类型 | Body                |      |
 
 ##### Request
 
@@ -24,7 +27,7 @@
 
 
 
-##### Response
+##### Response / Json
 
 ```json
 {
@@ -38,7 +41,12 @@
 
 ### 租户登陆
 
->/v1/tenant/login
+| 请求方法 | POST             |      |
+| -------- | ---------------- | ---- |
+| 请求URL  | /v1/tenant/login |      |
+| 参数类型 | Body             |      |
+
+
 
 ##### Request
 
@@ -54,19 +62,40 @@
 }
 ```
 
-##### Response
+##### Response / Json
 
 
 
 
 
-###  获取Token
+### 获取Token
 
-> Token默认3天有效期
->
-> 刷新Token默认1天有效期
+| 请求方法 | POST       |      |
+| -------- | ---------- | ---- |
+| 请求URL  | /api/token |      |
+| 参数类型 | Body       |      |
 
-##### Response
+
+
+##### Request
+
+| 参数     | 类型   | 是否必须 | 备注     |
+| -------- | ------ | -------- | -------- |
+| tenant   | String | 是       | 租户账号 |
+| user     | String | 是       | 用户账号 |
+| password | String | 是       | 用户密码 |
+
+```json
+{
+    "tenant" : "absdcscsjk2ss",
+    "user" : "abc",
+    "password": "12312312."
+}
+```
+
+
+
+##### Response / Json
 
 | 参数          | 类型          | 是否必须 | 备注                |
 | ------------- | ------------- | -------- | ------------------- |
