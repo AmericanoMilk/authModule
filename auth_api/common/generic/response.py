@@ -7,6 +7,10 @@ class Response:
     msg: str = ""
     data: dict = field(default_factory=dict)
 
+    @property
+    def to_dict(self):
+        return self.__dict__
+
 
 @dataclass()
 class PageResult:
