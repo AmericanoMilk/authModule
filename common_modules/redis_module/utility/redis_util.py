@@ -15,32 +15,30 @@ class AbstractRedis(RedisList, RedisDict, RedisChannel, RedisStr, RedisCommonToo
 
 
 class AbsRedis(AbstractRedis):
-    def __connect(self, host, db, password, port=6379, user=None, **kw):
+    def __get_client_obj(self, host, db, password, port=6379, user=None, **kw) -> None:
         g_host = "host" + host
         g_host = g_host.replace(".", "d")
-        if hasattr(self, f"{g_host}_client_dict"):
-            if hasattr(hasattr(self, f"{g_host}_client_dict"), db):
-                self.connect_pool = getattr(getattr(self, f"{g_host}_client_dict"), db)
-            else:
-                self.connect_pool = redis.ConnectionPool(
-                    host=host, port=port, password=password, db=db, decode_responses=True
-                )
-                setattr(getattr(self, f"{g_host}_client_dict"), db, self.connect_pool)
-
-        else:
+        if not hasattr(self, f"{g_host}_client_dict"):
             setattr(self, f"{g_host}_client_dict", {})
-            self.connect_pool = redis.ConnectionPool(
+
+        getattr(self, f"{g_host}_client_dict").setdefault(str(db), {})
+
+        self.connect_pool: dict = getattr(self, f"{g_host}_client_dict")
+
+        db_client = self.connect_pool.get(db, None)
+        if db_client:
+            self.connect_obj = db_client
+            return
+        else:
+            self.connect_obj = redis.ConnectionPool(
                 host=host, port=port, password=password, db=db, decode_responses=True
             )
-            ghost_dict = getattr(self, f"{g_host}_client_dict")
-            ghost_dict[db] = self.connect_pool
-            # setattr(ghost_dict, str(db), self.connect_pool)
+            self.connect_pool[db] = self.connect_pool
+            return
+
 
     def __init__(
             self, db=0, *args, host=redis_conf.host, port=redis_conf.port, password=redis_conf.password, **kw
     ):
-        self.__connect(host=host, port=port, password=password, db=db, kw=kw)
-
-    @property
-    def client(self):
-        return redis.StrictRedis(connection_pool=self.connect_pool, charset="utf8-mb4")
+        self.connect_pool = dict()
+        self.__get_client_obj(host=host, port=port, password=password, db=db, kw=kw)

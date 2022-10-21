@@ -1,11 +1,11 @@
 from django.conf import settings
 
 from common.account.utils import account_utils
-from common_modules.redis_module.redis_client import RedisClient
 from common_modules.constant import TOKEN_EXPIRES_TIME, REDIS_TOKEN_KEY
 from common_modules.utc_tools import get_utc
+from middlewares.conn_client import ConnClient
 
-redis_client = RedisClient()
+redis_client = ConnClient().redis_client
 
 
 class TokenUtil:

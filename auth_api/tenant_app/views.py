@@ -2,10 +2,11 @@ from django.contrib import auth
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import permissions
 from rest_framework.views import APIView
-from rest_framework_simplejwt import authentication
+from rest_framework.authentication import TokenAuthentication
 
 from common.generic.response import Response
 from common.obj.transaction import Transaction
+from common.permission.tenant_token_permission import TenantTokenPermission
 from common.queryset_util import queryset_util
 from common.response import Results
 from common.account.token import token_util
@@ -58,8 +59,8 @@ class TenantRegister(APIView):
 
 
 class TenantInfoView(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    authentication_classes = (authentication.JWTAuthentication,)
+    permission_classes = [TenantTokenPermission]
+    # authentication_classes = (TokenAuthentication,)
 
     @parsed_calibration_params
     def get(self, request, *args, **kwargs):

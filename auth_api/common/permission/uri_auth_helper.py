@@ -4,8 +4,9 @@ import re
 from django.http import HttpResponseNotFound
 from common_modules.redis_module.redis_client import RedisClient
 from common_modules.constant import REDIS_TENANT_KEY
+from middlewares.conn_client import ConnClient
 
-redis_client = RedisClient()
+redis_client = ConnClient().redis_client
 
 
 class URLAuthHelper:

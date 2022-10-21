@@ -5,8 +5,9 @@ from django.forms import model_to_dict
 from common.forms import model_to_dict_uncheck_editable_attr
 from common_modules.redis_module.redis_client import RedisClient
 from constant import REDIS_ACCOUNT_LIST, REDIS_ACCOUNT_KEY
+from middlewares.conn_client import ConnClient
 
-redis_client = RedisClient()
+redis_client = ConnClient().redis_client
 
 
 class SyncAccount:

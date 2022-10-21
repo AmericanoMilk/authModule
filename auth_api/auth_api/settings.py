@@ -130,7 +130,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Auth
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        "common.authentication.JWTIoTAuthentication.JWTIoTAuthentication",
     ],
     "EXCEPTION_HANDLER": "common.exception.drf_exception.response_exception_handler",
 

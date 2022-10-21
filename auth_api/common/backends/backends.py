@@ -8,12 +8,12 @@ from common_modules.constant import TENANT_SPLIT, REDIS_TENANT_KEY
 from common.permission.uri_auth_helper import url_auth_helper
 from common.account.utils import AccountUtils, account_utils
 from common_modules.exception.api import NotFoundPage
+from middlewares.conn_client import ConnClient
 from user_app import models as user_model
 from tenant_app import models as tenant_model
 
-from common_modules.redis_module.redis_client import RedisClient
 
-redis_client = RedisClient()
+redis_client = ConnClient().redis_client
 
 
 class RBACRbacBackends:
