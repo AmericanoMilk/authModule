@@ -1,3 +1,6 @@
+import datetime
+import time
+
 from django.conf import settings
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import update_last_login
@@ -8,6 +11,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, Toke
 
 from common.generic.response import Response
 from common.account.token import token_util
+from utc_tools import UTC_FORMAT
 
 
 class TokenObtainPairIoTSerializer(TokenObtainPairSerializer):
@@ -22,6 +26,7 @@ class TokenObtainPairIoTSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token["version"] = user.token_version
+        token['instanceType'] = "user" if hasattr(user, "fk_tenant_id") else "tenant"
         token_util.upload_token(instance=user, token=str(token.access_token))
         return token
 

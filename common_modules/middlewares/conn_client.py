@@ -1,4 +1,4 @@
-from redis_module.redis_client import RedisClient
+from common_modules.redis_module.redis_client import RedisClient
 
 
 class ConnClient:

@@ -5,8 +5,8 @@ from shortuuid import uuid
 
 
 class AbstractBaseModel(models.Model):
-    created_time = models.DateTimeField(editable=False, auto_now_add=True)
-    updated_time = models.DateTimeField(editable=False, auto_now=True)
+    creationTime = models.DateTimeField(editable=False, auto_now_add=True)
+    updatedTime = models.DateTimeField(editable=False, auto_now=True)
     uuid = ShortUUIDField(null=True, max_length=64, help_text="数据uuid", unique=True, default=uuid())
 
     class Meta:

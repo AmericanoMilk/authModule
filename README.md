@@ -1,3 +1,17 @@
+## 前置说明
+
+1. Token无特殊说明则都为 Bearer Token 形式
+
+```json
+headers = {
+  'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6InhGM2VFYUdVb2UyaFBtNERzbmp4WGIiLCJpbnN0YW5jZVR5cGUiOiJ0ZW5hbnQiLCJ2ZXJzaW9uIjoia0RHTUVvNERmVll3cW1jVDMyZEFwbSIsInRpbWUiOiIyMDIyLTEwLTIxVDIzOjE2OjEwLjAxNTg4N1oiLCJleHAiOjE2NjY1NjY5NzB9.9GyRxqEq5NF4b7iUE8nbaHFhsTQrG343CEKtmT3jSUs',
+  'Cookie': 'csrftoken=ctKVjswnggXjYrrkdc8tE4rKEtTUxJuolJeUepS7ROrlP1UpNSM5yO6Aw7ZgGKrZ; sessionid=gx7anmdtyxv4aukw553ior5tiqn0t9an'
+}
+
+```
+
+
+
 ## 租户管理
 
 
@@ -90,6 +104,55 @@
 }
 ```
 
+### 租户信息
+
+| 请求方法 | GET             |
+| -------- | ---------------- |
+| 请求URL  | /v1/tenant/tenants |
+| 参数类型 | Params             |
+
+
+##### Request
+
+| 参数     | 类型          | 是否必须 | 备注 |
+| -------- | ------------- | -------- | ---- |
+| tenant   | string        | 否       |      |
+| password | Any From Json | 否       |      |
+| page | Int | 否       | 默认：1 |
+| size | Int | 否       | 默认：20 |
+
+##### Response / Json
+
+```json
+{
+    "code": 200,
+    "msg": "",
+    "data": {
+        "page": 1,
+        "size": 1,
+        "totalPage": 1,
+        "result": [
+            {
+                "id": 1,
+                "creationTime": 1666397319,
+                "updatedTime": 1666397319,
+                "uuid": "xF3eEaGUoe2hPm4DsnjxXb",
+                "tenant": "absdcscsjk2ss",
+                "name": null,
+                "status": "NORMAL",
+                "is_superuser": false,
+                "last_login": 1666397319,
+                "token_version": "kDGMEo4DfVYwqmcT32dApm",
+                "is_active": true
+            }
+        ]
+    }
+}
+```
+
+
+
+
 
 
 
@@ -135,18 +198,104 @@
 
 
 
-
-
 ```json
 {
     "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2MjU2OTIyLCJpYXQiOjE2NjYwODQxMjIsImp0aSI6ImRmMWViNmNjNTg5NTRmMmQ5OTJiYTU4OTFkNGFiMjAyIiwidXNlcl9pZCI6MSwidmVyc2lvbiI6IjEifQ.NBM904htlOw5d2Fv8mxDAs-EEXaZUCfIjxb9r6QIU94",
     "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NjM0MzMyMiwiaWF0IjoxNjY2MDg0MTIyLCJqdGkiOiI5OGI5YjcyYWQ0MDU0NjNlYjEwNmE2MmIzMWJkZTc5ZSIsInVzZXJfaWQiOjEsInZlcnNpb24iOiIxIn0.wGt-UfddHoE2qvUO95GHsICc2x1osZVvWLVi_V74KLI",
     "user": "abc",
-    "currentTime": 1666084122,
-    "expireTime": 1666343322,
+    "currentTime": 1666397319,
+    "expireTime": 1666397319,
     "tokenType": "refresh"
 }
 ```
 
 
+
+
+
+### 刷新Token
+
+| 请求方法 | POST               |
+| -------- | ------------------ |
+| 请求URL  | /api/token/refresh |
+| 参数类型 | Body               |
+
+
+
+##### Request
+
+| 参数          | 类型   | 是否必须 | 备注 |
+| ------------- | ------ | -------- | ---- |
+| refresh_token | String | 是       |      |
+
+```json
+
+{
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTY2NjU0MzAwNywiaWF0IjoxNjY2MjgzODA3LCJqdGkiOiJkYWY5MjYwZjk1OWQ0ZGUxOWEzMDkwMTkzZmVlYTZjMCIsInVzZXJfaWQiOjEsInZlcnNpb24iOiIxIn0.kcwjsfONiHdfzlD7N2cMggdacwd6FebqAkAS27lbbdQ"
+}
+```
+
+
+
+##### Repsonse / Json
+
+```json
+{
+    "code": 200,
+    "msg": "",
+    "data": {
+        "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2NTY2Mzg5LCJpYXQiOjE2NjYyODM4MDcsImp0aSI6IjIxYjUxY2YzNTM5YjQwYTBhZmJlNjMzYWVkZWFmMmZlIiwidXNlcl9pZCI6MSwidmVyc2lvbiI6IjEifQ.lCvvm7Jm4hGqdl9J4ypOoEEySu6TcrbiIEuTFt2Ap8Q",
+        "tokenType": "refresh",
+        "currentTime": 1666397319,
+        "expire_time": 1666397319
+    }
+}
+```
+
+
+
+### Token校验
+
+| 请求方法 | POST               |
+| -------- | ------------------ |
+| 请求URL  | /api/token/refresh |
+| 参数类型 | Body               |
+
+
+
+##### Request
+
+| 参数  | 类型   | 是否必须 | 备注 |
+| ----- | ------ | -------- | ---- |
+| token | String | 是       |      |
+
+```json
+{
+    "token" : "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjY2NDU5MzkzLCJpYXQiOjE2NjYyODY1OTMsImp0aSI6IjBjNGQ5YTgwZTYxOTQyMGY4ZmFmY2VmNTFiNGQ0YWUxIiwidXNlcl9pZCI6MSwidmVyc2lvbiI6IjEifQ.umDS0XLjk9uw7ibIpj4jEQLf5-NuohymLOu0GW-SvwA"
+}
+```
+
+
+
+##### Repsonse / Json
+
+正确
+
+```json
+{
+    "code": 200,
+    "msg": "",
+    "data": {}
+}
+```
+
+无效Token
+
+```json
+{
+    "code": 400,
+    "msg": "{'non_field_errors': [ErrorDetail(string='Token is invalid or expired', code='token_not_valid')]}",
+    "data": {}
+}
+```
 

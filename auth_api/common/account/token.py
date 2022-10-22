@@ -3,11 +3,9 @@ from django.conf import settings
 from common.account.utils import account_utils
 from common_modules.constant import TOKEN_EXPIRES_TIME, REDIS_TOKEN_KEY
 from common_modules.utc_tools import get_utc
-from middlewares.conn_client import ConnClient
+from common_modules.middlewares.conn_client import ConnClient
 
 redis_client = ConnClient().redis_client
-
-
 class TokenUtil:
     def generate_token(
             self,
@@ -27,6 +25,7 @@ class TokenUtil:
         token = settings.JWT_UTILS.encode(
             {
                 "id": instance.uuid,
+                "instanceType": "user" if hasattr(instance, "fk_tenant_id") else "tenant",
                 "version": version,
                 "time": get_utc()
             },

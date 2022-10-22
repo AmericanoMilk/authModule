@@ -6,3 +6,6 @@ REDIS_TENANT_KEY = "tenant:"
 REDIS_TOKEN_KEY = "auth_token:"
 REDIS_ACCOUNT_KEY = "account:"
 REDIS_ACCOUNT_LIST = "account_list"
+
+DEFAULT_PAGE = 1
+DEFAULT_SIZE = 20

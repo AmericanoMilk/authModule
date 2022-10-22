@@ -4,6 +4,7 @@ from rest_framework import permissions
 from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 
+from common.generic.model import get_model_dict
 from common.generic.response import Response
 from common.obj.transaction import Transaction
 from common.permission.tenant_token_permission import TenantTokenPermission
@@ -11,6 +12,7 @@ from common.queryset_util import queryset_util
 from common.response import Results
 from common.account.token import token_util
 from common.vail import parsed_calibration_params
+from constant import DEFAULT_PAGE, DEFAULT_SIZE
 from tenant_app.serializer import TenantLoginSerializer, TenantRegisterSerializer, TenantSearchSerializer
 from tenant_app.utility.tenant_manager_helper import tenant_manger_helper
 
@@ -37,8 +39,9 @@ class TenantLoginView(APIView):
             "name": _user.name,
             "isAdmin": _user.is_admin,
             "isActive": _user.is_normal,
-            "lastLogin": int(_user.last_login.timestamp())
+            "lastLogin": _user.last_login
         }
+        response.msg = "login success"
         return response
 
 
@@ -60,21 +63,25 @@ class TenantRegister(APIView):
 
 class TenantInfoView(APIView):
     permission_classes = [TenantTokenPermission]
+
     # authentication_classes = (TokenAuthentication,)
 
     @parsed_calibration_params
     def get(self, request, *args, **kwargs):
         ser = TenantSearchSerializer(data=request.data)
+        ser.is_valid(raise_exception=True)
         tenant = request.tenant
 
-        be_search_tenant = ser.validated_data.get("tenant")
+        be_search_tenant = ser.validated_data.get("tenant", tenant.tenant)
         all_results = ser.validated_data.get("all_results")
-        page = ser.validated_data.get("page")
-        size = ser.validated_data.get("size")
+        page = ser.validated_data.get("page", DEFAULT_PAGE)
+        size = ser.validated_data.get("size", DEFAULT_SIZE)
 
         tenant_list = tenant_manger_helper.search_tenant(tenant, be_search_tenant=be_search_tenant,
                                                          all_results=all_results)
         tenant_list, response = queryset_util.pagination(tenant_list, page=page, size=size)
+        for i in tenant_list:
+            response.data.result.append(get_model_dict(i,exclude=("password")))
         return response
 
     def update(self, request, *args, **kwargs):

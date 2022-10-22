@@ -25,6 +25,14 @@ class Tenant(AbstractBaseModel):
     last_login = models.DateTimeField(auto_now=True, help_text="最后登录", editable=True, db_column="last_login")
 
     token_version = ShortUUIDField(null=False, max_length=64, help_text="版本", default=uuid())
+    is_active = models.BooleanField(
+        _('active'),
+        default=True,
+        help_text=_(
+            'Designates whether this user should be treated as active. '
+            'Unselect this instead of deleting accounts.'
+        ),
+    )
 
     class Meta:
         verbose_name = "租户表"
